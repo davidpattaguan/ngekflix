@@ -1,16 +1,18 @@
-import { signInWithPopup } from "firebase/auth";
 import Head from "next/head";
 import Image from "next/image";
-import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useRef, useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import useAuth from "../hooks/useAuth";
 
 interface Inputs {
   email: string;
   password: string;
 }
 
-const login = () => {
+function Login() {
   const [login, setLogin] = useState(false);
+  const { signIn, signUp } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -19,29 +21,31 @@ const login = () => {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
     if (login) {
-      // await signIn(email,password)
+      await signIn(data.email, data.password);
     } else {
-      // await signUp()
+      await signUp(data.email, data.password);
     }
   };
 
   return (
-    <div className="relative flex h-screen w-screen flex-col bg-black md:items-center">
+    <div className="relative flex h-screen w-screen flex-col md:items-center md:justify-center">
       <Head>
         <title>Ngekflix</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Image
         src="https://rb.gy/p2hphi"
-        fill
+        layout="fill"
         className="-z-10 !hidden opacity-60 sm:!inline"
-        style={{ objectFit: "cover" }}
-        alt=""
+        objectFit="cover"
       />
-      <h1 className="absolute left-4 top-4 cursor-pointer object-contain md:left-10 md:top-6 text-red-500 font-bold text-5xl">
-        Ngekflix
-      </h1>
+      <div className="absolute left-2 top-1 h-20 w-44 cursor-pointer md:left-8 md:top-4">
+        <h1 className="text-red-600 text-4xl font-bold text-shadow-lg">
+          Ngekflix
+        </h1>
+      </div>
 
       <form
         className="relative mt-24 space-y-8 rounded bg-black/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14"
@@ -52,12 +56,12 @@ const login = () => {
           <label className="inline-block w-full">
             <input
               type="email"
-              placeholder="email"
-              className="input "
+              placeholder="Email"
+              className="input"
               {...register("email", { required: true })}
             />
             {errors.email && (
-              <p className="p-1 text-[13px] font-light  text-orange-500">
+              <p className="text-sm  text-orange-500">
                 Please enter a valid email.
               </p>
             )}
@@ -65,29 +69,37 @@ const login = () => {
           <label className="inline-block w-full">
             <input
               type="password"
-              placeholder="Password"
-              className="input "
               {...register("password", { required: true })}
+              placeholder="Password"
+              className="input"
             />
             {errors.password && (
-              <p className="p-1 text-[13px] font-light  text-orange-500">
+              <p className="text-sm  text-orange-500">
                 Your password must contain between 4 and 60 characters.
               </p>
             )}
           </label>
         </div>
-        <button className="w-full rounded bg-[#e50914] py-4 font-semibold">
+        <button
+          className="w-full rounded bg-[#E50914] py-3 font-semibold"
+          onClick={() => setLogin(true)}
+          type="submit"
+        >
           Sign In
         </button>
         <div className="text-[gray]">
-          New to Netflix?{" "}
-          <button type="submit" className="text-white hover:underline">
+          New to Ngekflix?{" "}
+          <button
+            className="cursor-pointer text-white hover:underline"
+            onClick={() => setLogin(false)}
+            type="submit"
+          >
             Sign up now
           </button>
         </div>
       </form>
     </div>
   );
-};
+}
 
-export default login;
+export default Login;

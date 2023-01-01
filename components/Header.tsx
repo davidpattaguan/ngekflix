@@ -2,7 +2,9 @@ import { BellIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { hasSubscribers } from "diagnostics_channel";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import useAuth from "../hooks/useAuth";
 const Header = () => {
+  const { logout, loading } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -37,13 +39,13 @@ const Header = () => {
         <MagnifyingGlassIcon className="hidden sm:inline h-6 w-6" />
         <p className="hidden lg:inline">Kids</p>
         <BellIcon className="h-6 w-6" />
-        <Link href="/account">
+        <button onClick={logout}>
           <img
             src="https://ih1.redbubble.net/image.618427277.3222/flat,800x800,075,f.u2.jpg"
             alt=""
             className="h-6 w-6"
           />
-        </Link>
+        </button>
       </div>
     </header>
   );
