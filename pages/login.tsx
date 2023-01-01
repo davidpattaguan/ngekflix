@@ -37,9 +37,10 @@ function Login() {
       </Head>
       <Image
         src="https://rb.gy/p2hphi"
-        layout="fill"
+        fill
         className="-z-10 !hidden opacity-60 sm:!inline"
-        objectFit="cover"
+        style={{ objectFit: "cover" }}
+        alt=""
       />
       <div className="absolute left-2 top-1 h-20 w-44 cursor-pointer md:left-8 md:top-4">
         <h1 className="text-red-600 text-4xl font-bold text-shadow-lg">
